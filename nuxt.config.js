@@ -1,4 +1,5 @@
-const pkg = require('./package')
+const pkg = require('./package');
+const webpack = require("webpack");
 
 module.exports = {
   mode: 'universal',
@@ -27,12 +28,14 @@ module.exports = {
   ** Global CSS
   */
   css: [
+    "~/node_modules/bootstrap/dist/css/bootstrap.css"
   ],
 
   /*
   ** Plugins to load before mounting the App
   */
   plugins: [
+    "~plugins/bootstrap.js"
   ],
 
   /*
@@ -40,7 +43,11 @@ module.exports = {
   */
   modules: [
     // Doc: https://github.com/nuxt-community/axios-module#usage
-    '@nuxtjs/axios'
+    '@nuxtjs/axios',
+    ['wp-nuxt', {
+      endpoint: 'https://wp.kmr.io/wp-json'
+      /* other options of WP-API */
+    }],
   ],
   /*
   ** Axios module configuration
@@ -53,6 +60,17 @@ module.exports = {
   ** Build configuration
   */
   build: {
+
+    /**
+    * add external plugins
+    */
+    vendor: ["jquery", "bootstrap"],
+      plugins: [
+        new webpack.ProvidePlugin({
+        $: "jquery"
+      })
+    ],
+
     /*
     ** You can extend webpack config here
     */
